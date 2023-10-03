@@ -17,6 +17,19 @@ if [[ "$response" == "y" ]]; then
     sudo pacman -S picom
 fi
 
+theme_dir="/home/$USER/.config/awesome/themes/"
+theme_options=$(ls "$theme_dir" | sed 's/\..*//')
+
+read -p "What theme do you want for AwesomeWM? [$theme_options] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+theme_file="$theme_dir$response.lua"
+
+if [[ -e "$theme_file" ]]; then
+    echo "THEME=$response" > /home/"$USER"/.config/awesome/theme.lua
+    echo "Theme saved"
+else
+    echo "Invalid theme choice. Leaving default 'purple'."
+fi
+
 echo "Restarting AwesomeWM..."
 echo 'awesome.restart()' | awesome-client
 
