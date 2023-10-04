@@ -17,6 +17,9 @@ if [[ "$response" == "y" ]]; then
     sudo pacman -S picom
 fi
 
+echo "Installing luafilesystem (lfs) -- Requirement for the AwesomeWM config"
+sudo luarocks install luafilesystem
+
 theme_dir="/home/$USER/.config/awesome/themes/"
 theme_options=$(ls "$theme_dir" | sed 's/\..*//')
 
