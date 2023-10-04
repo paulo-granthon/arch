@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd, luarocks..."
-sudo pacman -Sy --needed bpytop github-cli neoetch neovim alacritty ttf-hack-nerd luarocks --noconfirm
+echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
+sudo pacman -Sy --needed bpytop github-cli neoetch neovim alacritty ttf-hack-nerd --noconfirm
 neofetch
 
 echo "Starting GitHub authentication..."
@@ -16,9 +16,6 @@ read -p "Do you want to install picom? [Y/n] " response && response=${response:-
 if [[ "$response" == "y" ]]; then
     sudo pacman -S picom
 fi
-
-echo "Installing luafilesystem (lfs) -- Requirement for the AwesomeWM config"
-sudo luarocks install luafilesystem
 
 theme_dir="/home/$USER/.config/awesome/themes/"
 theme_options=$(ls "$theme_dir" | sed 's/\..*//')
