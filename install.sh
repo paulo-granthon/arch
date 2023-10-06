@@ -23,7 +23,7 @@ if [[ "$response" == "y" ]]; then
     sudo pacman -S picom --noconfirm
 fi
 
-theme_dir="/home/$USER/.config/awesome/themes/"
+theme_dir="$HOME/.config/awesome/themes/"
 theme_options=$(ls "$theme_dir" | sed 's/\..*//')
 
 read -p "What theme do you want for AwesomeWM? [$theme_options] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
