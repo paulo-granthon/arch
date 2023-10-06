@@ -9,7 +9,7 @@ gh auth login
 echo "Installing yay"
 sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd
 
-echo "Cloning configuration files for Alacritty, and NeoVim from GitHub..."
+echo "Cloning configuration files for AwesomeWM from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
@@ -24,7 +24,7 @@ read -p "What theme do you want for AwesomeWM? [$theme_options] " response && re
 theme_file="$theme_dir$response.lua"
 
 if [[ -e "$theme_file" ]]; then
-    echo "THEME=$response" > /home/"$USER"/.config/awesome/theme.lua
+    echo "THEME=$response" > "$HOME"/.config/awesome/theme.lua
     echo "Theme saved"
 else
     echo "Invalid theme choice. Leaving default 'purple'."
@@ -34,16 +34,16 @@ echo "Restarting AwesomeWM..."
 echo 'awesome.restart()' | awesome-client
 
 echo "Cloning configuration files for Alacritty and NeoVim from GitHub..."
-git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
 git clone https://github.com/paulo-granthon/alacritty ~/.config/alacritty
+git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
 
 echo "Installing packer for NeoVim..."
 git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
 
 echo "Sourcing packer from NeoVim..."
-nvim -c "so" -c "PackerSync" /home/"$USER"/.config/nvim/lua/cfg/packer.lua
+nvim -c "so" -c "PackerSync" "$HOME"/.config/nvim/lua/cfg/packer.lua
 
 echo "Making the dev directory..."
-mkdir /home/"$USER"/dev/
+mkdir "$HOME"/dev/
 
 echo "Done!"
