@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
-sudo pacman -Sy --needed bpytop github-cli neoetch neovim alacritty ttf-hack-nerd --noconfirm
+sudo pacman -Sy --needed bpytop github-cli neoetch neovim alacritty ttf-hack-nerd scrot --noconfirm
 neofetch
 
 echo "Starting GitHub authentication..."
