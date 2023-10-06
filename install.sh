@@ -7,14 +7,14 @@ echo "Starting GitHub authentication..."
 gh auth login
 
 echo "Installing yay"
-sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd
+sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd
 
 echo "Cloning configuration files for Alacritty, and NeoVim from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
-    sudo pacman -S picom
+    sudo pacman -S picom --noconfirm
 fi
 
 theme_dir="/home/$USER/.config/awesome/themes/"
