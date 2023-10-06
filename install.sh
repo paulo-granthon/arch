@@ -8,6 +8,8 @@ gh auth login
 
 mkdir "$HOME/.local/"
 mkdir "$HOME/.local/bin/"
+mkdir "$HOME/pics/"
+mkdir "$HOME/pics/screenshots/"
 
 echo "Cloning sshot from GitHub Gist"
 gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
