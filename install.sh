@@ -6,6 +6,12 @@ neofetch
 echo "Starting GitHub authentication..."
 gh auth login
 
+mkdir "$HOME/.local/"
+mkdir "$HOME/.local/bin/"
+
+echo "Cloning sshot from GitHub Gist"
+gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
+
 echo "Installing yay"
 sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd
 
