@@ -1,7 +1,10 @@
 #!/bin/bash
 echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
-sudo pacman -Sy --needed bpytop github-cli neoetch neovim alacritty ttf-hack-nerd scrot --noconfirm
+sudo pacman -Sy --needed bpytop github-cli materia-gtk-theme neoetch neovim alacritty ttf-hack-nerd scrot --noconfirm
 neofetch
+
+echo "Setting Materia-dark-compact as the gtk theme for the system..."
+awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini > tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
 
 echo "Starting GitHub authentication..."
 gh auth login
