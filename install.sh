@@ -1,6 +1,18 @@
 #!/bin/bash
 echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
-sudo pacman -Sy --needed bpytop github-cli thunar materia-gtk-theme neofetch neovim alacritty ttf-hack-nerd scrot thefuck --noconfirm
+sudo pacman -Sy --needed \
+    alacritty \
+    github-cli \
+    neovim \
+    thunar \
+    materia-gtk-theme \
+    bpytop \
+    neofetch \
+    ttf-hack-nerd \
+    scrot \
+    thefuck \
+--noconfirm
+
 neofetch
 
 echo "Removing nautilus..."
