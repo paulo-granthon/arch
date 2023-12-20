@@ -2,6 +2,7 @@
 echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
 sudo pacman -Sy --needed \
     alacritty \
+    tmux \
     github-cli \
     neovim \
     thunar \
