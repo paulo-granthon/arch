@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Updating keyrings and installing bpytop, neofetch, neovim, alacritty, ttf-hack-nerd..."
+echo "Updating keyrings and installing predefined packages..."
 sudo pacman -Sy --needed \
     alacritty \
     tmux \
