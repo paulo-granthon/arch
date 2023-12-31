@@ -24,7 +24,7 @@ gtk_theme_set=awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/g
 sudo rm tmpfile
 if [[ "$gtk_theme_set" -eq 1 ]]; then
     sudo mkdir ~/.config/gtk-3.0/
-    sudo echo "[Settings]" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "[Settings]" > ~/.config/gtk-3.0/settings.ini
     sudo echo "gtk-theme-name=Materia-dark-compact" >> ~/.config/gtk-3.0/settings.ini
     sudo echo "gtk-icon-theme-name=Adwaita" >> ~/.config/gtk-3.0/settings.ini
     sudo echo "gtk-font-name=Cantarell 11" >> ~/.config/gtk-3.0/settings.ini
