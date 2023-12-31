@@ -58,6 +58,9 @@ sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.arch
 echo "Cloning configuration files for AwesomeWM from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
+sudo chmod +x ~/.config/awesome/picom.bash*
+sudo chmod +x ~/.config/awesome/verify_theme.bash*
+
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
     sudo pacman -S picom --noconfirm
