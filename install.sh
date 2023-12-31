@@ -24,21 +24,21 @@ gtk_theme_set=awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/g
 sudo rm tmpfile
 if [[ "$gtk_theme_set" -eq 1 ]]; then
     sudo mkdir ~/.config/gtk-3.0/
-    sudo echo "[Settings]" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-theme-name=Materia-dark-compact" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-icon-theme-name=Adwaita" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-font-name=Cantarell 11" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-cursor-theme-name=Adwaita" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-cursor-theme-size=0" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-toolbar-style=GTK_TOOLBAR_BOTH" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-button-images=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-menu-images=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-enable-event-sounds=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-enable-input-feedback-sounds=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-antialias=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-hinting=1" >> /.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-hintstyle=hintfull" >> /.config/gtk-3.0/settings.ini
+    sudo echo "[Settings]" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-theme-name=Materia-dark-compact" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-icon-theme-name=Adwaita" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-font-name=Cantarell 11" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-cursor-theme-name=Adwaita" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-cursor-theme-size=0" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-toolbar-style=GTK_TOOLBAR_BOTH" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-button-images=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-menu-images=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-enable-event-sounds=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-enable-input-feedback-sounds=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-xft-antialias=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-xft-hinting=1" >> ~/.config/gtk-3.0/settings.ini
+    sudo echo "gtk-xft-hintstyle=hintfull" >> ~/.config/gtk-3.0/settings.ini
 fi
 
 echo "Starting GitHub authentication..."
