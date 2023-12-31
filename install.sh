@@ -61,6 +61,9 @@ git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
     sudo pacman -S picom --noconfirm
+
+    echo "Cloning configuration files for Picom..."
+    git clone https://github.com/paulo-granthon/picom ~/.config/picom
 fi
 
 theme_dir="$HOME/.config/awesome/themes/"
