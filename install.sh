@@ -92,10 +92,17 @@ fi
 echo "Restarting AwesomeWM..."
 echo 'awesome.restart()' | awesome-client
 
-echo "Cloning configuration files for Alacritty and NeoVim from GitHub..."
+echo "Cloning configuration files for Alacritty, NeoVim and Starship from GitHub..."
 git clone https://github.com/paulo-granthon/alacritty ~/.config/alacritty
 git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
+git clone https://github.com/paulo-granthon/starship ~/.config/starship
 
+echo "Setting up Starship in \`.bashrc\` and applying custom config path..."
+cat << EOF > ~/.bashrc
+# Starship
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init bash)"
+EOF
 
 
 echo "Making the dev directory..."
