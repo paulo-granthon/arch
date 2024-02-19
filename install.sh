@@ -93,11 +93,7 @@ echo "Cloning configuration files for Alacritty and NeoVim from GitHub..."
 git clone https://github.com/paulo-granthon/alacritty ~/.config/alacritty
 git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
 
-echo "Installing packer for NeoVim..."
-git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
 
-echo "Sourcing packer from NeoVim..."
-nvim -c "so" -c "PackerSync" "$HOME"/.config/nvim/lua/cfg/packer.lua
 
 echo "Making the dev directory..."
 mkdir "$HOME"/dev/
