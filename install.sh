@@ -56,14 +56,14 @@ echo "Cloning sshot from GitHub Gist"
 gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
 
 echo "Installing yay"
-sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd
+sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd || exit
 
 echo "Cloning configuration files for AwesomeWM from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
 echo "Giving permissions to `.config/awesome` bash scripts..."
 CURDIR=$(pwd)
-cd ~/.config/awesome && make && cd CUR_DIR
+cd ~/.config/awesome && make && cd CUR_DIR || exit
 
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
