@@ -62,8 +62,8 @@ echo "Cloning configuration files for AwesomeWM from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
 echo "Giving permissions to `.config/awesome` bash scripts..."
-CURDIR=$(pwd)
-cd ~/.config/awesome && make && cd CUR_DIR || exit
+CUR_DIR=$(pwd)
+cd ~/.config/awesome && make && cd "$CUR_DIR" || exit
 
 read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
