@@ -64,7 +64,7 @@ sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.arch
 echo "Cloning configuration files for AwesomeWM from GitHub..."
 git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
 
-echo "Giving permissions to `.config/awesome` bash scripts..."
+echo "Giving permissions to \`.config/awesome\` bash scripts..."
 CUR_DIR=$(pwd)
 cd ~/.config/awesome && make && cd "$CUR_DIR" || exit
 
