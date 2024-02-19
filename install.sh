@@ -14,6 +14,9 @@ sudo pacman -Sy --needed \
     thefuck \
 --noconfirm
 
+echo "Installing Starship Prompt..."
+curl -sS https://starship.rs/install.sh | sh
+
 neofetch
 
 echo "Removing nautilus..."
