@@ -23,25 +23,28 @@ echo "Removing nautilus..."
 sudo pacman -Runs nautilus
 
 echo "Setting Materia-dark-compact as the gtk theme for the system..."
-gtk_theme_set=awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini > tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
+gtk_theme_set=$(awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini) > tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
 sudo rm tmpfile
 if [[ "$gtk_theme_set" -eq 1 ]]; then
     sudo mkdir ~/.config/gtk-3.0/
-    sudo echo "[Settings]" > ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-theme-name=Materia-dark-compact" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-icon-theme-name=Adwaita" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-font-name=Cantarell 11" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-cursor-theme-name=Adwaita" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-cursor-theme-size=0" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-toolbar-style=GTK_TOOLBAR_BOTH" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-button-images=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-menu-images=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-enable-event-sounds=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-enable-input-feedback-sounds=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-antialias=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-hinting=1" >> ~/.config/gtk-3.0/settings.ini
-    sudo echo "gtk-xft-hintstyle=hintfull" >> ~/.config/gtk-3.0/settings.ini
+    echo "[Settings]" > ~/.config/gtk-3.0/settings.ini
+    cat << EOF >> ~/.config/gtk-3.0/settings.ini
+"gtk-theme-name=Materia-dark-compact"
+"gtk-icon-theme-name=Adwaita"
+"gtk-font-name=Cantarell 11"
+"gtk-cursor-theme-name=Adwaita"
+"gtk-cursor-theme-size=0"
+"gtk-toolbar-style=GTK_TOOLBAR_BOTH"
+"gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR"
+"gtk-button-images=1"
+"gtk-menu-images=1"
+"gtk-enable-event-sounds=1"
+"gtk-enable-input-feedback-sounds=1"
+"gtk-xft-antialias=1"
+"gtk-xft-hinting=1"
+"gtk-xft-hintstyle=hintfull"
+EOF
+
 fi
 
 echo "Starting GitHub authentication..."
@@ -65,7 +68,7 @@ echo "Giving permissions to `.config/awesome` bash scripts..."
 CUR_DIR=$(pwd)
 cd ~/.config/awesome && make && cd "$CUR_DIR" || exit
 
-read -p "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+read -rp "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 if [[ "$response" == "y" ]]; then
     sudo pacman -S picom --noconfirm
 
@@ -74,9 +77,9 @@ if [[ "$response" == "y" ]]; then
 fi
 
 theme_dir="$HOME/.config/awesome/themes/"
-theme_options=$(ls "$theme_dir" | sed 's/\..*//')
+theme_options=$(find "$theme_dir" | sed 's/\..*//')
 
-read -p "What theme do you want for AwesomeWM? [$theme_options] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+read -rp "What theme do you want for AwesomeWM? [$theme_options] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 theme_file="$theme_dir$response.lua"
 
 if [[ -e "$theme_file" ]]; then
