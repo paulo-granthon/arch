@@ -12,7 +12,8 @@ sudo pacman -Sy --needed \
     neofetch \
     scrot \
     thefuck \
---noconfirm
+    tldr \
+    --noconfirm
 
 echo "Installing Starship Prompt..."
 curl -sS https://starship.rs/install.sh | sh
