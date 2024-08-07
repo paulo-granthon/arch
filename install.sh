@@ -80,8 +80,16 @@ mkdir "$HOME/.local/bin/"
 mkdir "$HOME/pics/"
 mkdir "$HOME/pics/screenshots/"
 
-echo "Cloning sshot from GitHub Gist"
+echo "Cloning custom scripts from GitHub gists..."
+
+echo "  sshot"
 gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
+
+echo "  colwatch"
+gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "$HOME"/.local/bin/colwatch
+
+echo "  gitsync"
+gh gist clone https://gist.github.com/paulo-granthon/8ea796e0f08ac0913c55d69fb11add8c "$HOME"/.local/bin/gitsync
 
 echo "Installing yay"
 sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd || exit
