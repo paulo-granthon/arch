@@ -16,6 +16,10 @@ sudo pacman -Sy --needed \
     neovim \
     docker \
     docker-compose \
+    npm \
+    yarn \
+    rustup \
+    python \
     thunar \
     materia-gtk-theme \
     ttf-hack-nerd \
