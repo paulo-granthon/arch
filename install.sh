@@ -113,6 +113,9 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init bash)"
 EOF
 
+prompt "Install Chrome?" && yay -S google-chrome --noconfirm
+
+prompt "Set up gaming utilities? Lutris, Steam, Wine, Winetricks?" && sudo pacman -S wine winetricks lutris steam --noconfirm
 
 echo "Making the dev directory..."
 mkdir "$HOME"/dev/
