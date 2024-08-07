@@ -206,7 +206,7 @@ echo "Creating vpn related scripts in \`~/.local/bin\`"
 cat <<EOF >~/.local/bin/vpn_start
 #!/bin/bash
 sudo echo "starting awsvpnclient.service..."
-sudo systemctl start awsvpnclient.service && 
+sudo systemctl start awsvpnclient.service &&
 sudo systemctl status awsvpnclient.service
 EOF
 
