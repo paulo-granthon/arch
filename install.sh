@@ -80,17 +80,6 @@ mkdir "$HOME/.local/bin/"
 mkdir "$HOME/pics/"
 mkdir "$HOME/pics/screenshots/"
 
-echo "Cloning custom scripts from GitHub gists..."
-
-echo "  sshot"
-gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
-
-echo "  colwatch"
-gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "$HOME"/.local/bin/colwatch
-
-echo "  gitsync"
-gh gist clone https://gist.github.com/paulo-granthon/8ea796e0f08ac0913c55d69fb11add8c "$HOME"/.local/bin/gitsync
-
 echo "Installing yay"
 sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd || exit
 
@@ -135,6 +124,43 @@ cat <<EOF >~/.bashrc
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init bash)"
 EOF
+
+echo "Cloning custom scripts from GitHub gists..."
+
+echo "  sshot"
+gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
+chmod +x ~/.local/bin/sshot
+
+echo "  colwatch"
+gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "$HOME"/.local/bin/colwatch
+chmod +x ~/.local/bin/colwatch
+
+echo "Cloning and setting up gitsync..."
+git clone https://github.com/paulo-granthon/gitsync "$HOME"/.local/bin/gitsync_temp
+mv "$HOME"/.local/bin/gitsync_temp/gitsync.sh "$HOME"/.local/bin/gitsync
+rm -rf "$HOME"/.local/bin/gitsync_temp/
+chmod +x ~/.local/bin/gitsync
+
+echo "Creating vpn related scripts in \`~/.local/bin\`"
+cat <<EOF >~/.local/bin/vpn_start
+#!/bin/bash
+sudo echo "starting awsvpnclient.service..."
+sudo systemctl start awsvpnclient.service && 
+sudo systemctl status awsvpnclient.service
+EOF
+
+cat <<EOF >~/.local/bin/vpn_kill
+#!/bin/bash
+sudo echo "stopping awsvpnclient.service..."
+sudo systemctl stop awsvpnclient.service
+sudo systemctl status awsvpnclient.service
+EOF
+
+chmod +x ~/.local/bin/vpn_start
+chmod +x ~/.local/bin/vpn_kill
+
+echo "Scripts in \`~/.local/bin\`:"
+ls -laL "$HOME"/.local/bin/
 
 echo "Setting up Rust..."
 rustup --version
