@@ -120,11 +120,67 @@ git clone https://github.com/paulo-granthon/alacritty ~/.config/alacritty
 git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
 git clone https://github.com/paulo-granthon/starship ~/.config/starship
 
+echo "Setting up preferences and fixes in \`.bashrc\`..."
+cat <<EOF >>testfile
+export EDITOR=nvim
+export TERM=xterm-256color
+export GTK_THEME=Adwaita:dark
+
+# fallback bash prompt
+# \`\u\`: The username of the current user
+# \`\h\`: The hostname up to the first .
+# \`\H\`: The full hostname
+# \`\w\`: The current working directory
+# \`\W\`: The basename of the current working directory
+# \`\\$\`: This code represents the prompt symbol, which is \$ for a regular user and # for the root user.
+PS1='[\u@\h \W]\\$ '
+
+# This line makes random commands try to use vim as a pager and fail
+# https://stackoverflow.com/questions/76535191/random-linux-command-invokes-vim-and-it-fails-with-vim-warning-input-is-not-f
+# export PAGER="vim -R +AnsiEsc"
+export PAGER=''
+
+EOF
+
+echo "Setting up PATH configuration in \`.bashrc\`..."
+cat <<EOF >>~/.bashrc
+# PATH configuration
+GO_PATH=\$(go env GOPATH)/bin
+export PATH=\$PATH:"\$HOME/.local/bin"
+export PATH=\$PATH:\$GO_PATH
+export PATH=\$PATH:~/.dotnet/tools
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+shopt -s cdable_vars
+
+EOF
+
+echo "Setting up custom aliases in \`.bashrc\`..."
+cat <<EOF >>~/.bashrc
+# general aliases
+alias ls='exa -lhTL 1 --icons --git --group-directories-first'
+alias grep='grep --color=auto'
+
+# awsvpnclient aliases
+alias aws=vpn_start
+alias kaws=vpn_kill
+
+eval "\$(thefuck --alias)"
+
+# Envyman (https://github.com/paulo-granthon/envyman) aliases
+exec &>/dev/null
+. "/tmp/envyman"
+exec &>/dev/tty
+alias EM="/tmp/envyman"
+
+EOF
+
 echo "Setting up Starship in \`.bashrc\` and applying custom config path..."
 cat <<EOF >~/.bashrc
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
-eval "$(starship init bash)"
+eval "\$(starship init bash)"
+
 EOF
 
 echo "Cloning custom scripts from GitHub gists..."
@@ -178,5 +234,10 @@ prompt "Set up gaming utilities? Lutris, Steam, Wine, Winetricks?" && sudo pacma
 echo "Making the dev directory..."
 sudo mkdir /usr/dev/
 sudo chown paulo:users "/usr/dev/"
+
+cat <<EOF >~/.bashrc
+export dev=/usr/dev
+
+EOF
 
 echo "Done!"
