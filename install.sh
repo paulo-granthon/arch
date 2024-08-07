@@ -20,14 +20,15 @@ packages=(
     yarn
     rustup
     python
-    thunar
     materia-gtk-theme
     ttf-hack-nerd
-    bpytop
+    thunar
+    cmus
     neofetch
-    scrot
+    bpytop
     thefuck
     tldr
+    scrot
 )
 
 echo "Packages to install:"
