@@ -174,6 +174,7 @@ prompt "Install Chrome?" && yay -S google-chrome --noconfirm
 prompt "Set up gaming utilities? Lutris, Steam, Wine, Winetricks?" && sudo pacman -S wine winetricks lutris steam --noconfirm
 
 echo "Making the dev directory..."
-mkdir "$HOME"/dev/
+sudo mkdir /usr/dev/
+sudo chown paulo:users "/usr/dev/"
 
 echo "Done!"
