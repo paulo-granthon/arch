@@ -14,6 +14,8 @@ sudo pacman -Sy --needed \
     tmux \
     github-cli \
     neovim \
+    docker \
+    docker-compose \
     thunar \
     materia-gtk-theme \
     ttf-hack-nerd \
