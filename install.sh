@@ -20,8 +20,10 @@ packages=(
     yarn
     rustup
     python
+    go
     materia-gtk-theme
     ttf-hack-nerd
+    eza
     thunar
     cmus
     neofetch
