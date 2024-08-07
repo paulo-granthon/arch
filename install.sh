@@ -7,9 +7,9 @@ sudo pacman -Sy --needed \
     neovim \
     thunar \
     materia-gtk-theme \
+    ttf-hack-nerd \
     bpytop \
     neofetch \
-    ttf-hack-nerd \
     scrot \
     thefuck \
 --noconfirm
