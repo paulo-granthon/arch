@@ -1,4 +1,13 @@
 #!/bin/bash
+
+function prompt {
+    read -rp "$1? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+    if [[ "$response" == "y" ]]; then
+        return 0
+    fi
+    return 1
+}
+
 echo "Updating keyrings and installing predefined packages..."
 sudo pacman -Sy --needed \
     alacritty \
@@ -69,8 +78,7 @@ echo "Giving permissions to \`.config/awesome\` bash scripts..."
 CUR_DIR=$(pwd)
 cd ~/.config/awesome && make && cd "$CUR_DIR" || exit
 
-read -rp "Do you want to install picom? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
-if [[ "$response" == "y" ]]; then
+if prompt "Install Picom?"; then
     sudo pacman -S picom --noconfirm
 
     echo "Cloning configuration files for Picom..."
