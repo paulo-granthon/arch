@@ -8,27 +8,35 @@ function prompt {
     return 1
 }
 
+# list of packages to install
+packages=(
+    alacritty
+    tmux
+    github-cli
+    neovim
+    docker
+    docker-compose
+    npm
+    yarn
+    rustup
+    python
+    thunar
+    materia-gtk-theme
+    ttf-hack-nerd
+    bpytop
+    neofetch
+    scrot
+    thefuck
+    tldr
+)
+
+echo "Packages to install:"
+for package in "${packages[@]}"; do
+    echo "  $package"
+done
+
 echo "Updating keyrings and installing predefined packages..."
-sudo pacman -Sy --needed \
-    alacritty \
-    tmux \
-    github-cli \
-    neovim \
-    docker \
-    docker-compose \
-    npm \
-    yarn \
-    rustup \
-    python \
-    thunar \
-    materia-gtk-theme \
-    ttf-hack-nerd \
-    bpytop \
-    neofetch \
-    scrot \
-    thefuck \
-    tldr \
-    --noconfirm
+sudo pacman -Sy --needed "${packages[@]}" --noconfirm
 
 echo "Installing Starship Prompt..."
 curl -sS https://starship.rs/install.sh | sh
