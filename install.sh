@@ -19,6 +19,9 @@ packages=(
     npm
     yarn
     rustup
+    lua
+    luarocks
+    luajit
     python
     go
     materia-gtk-theme
