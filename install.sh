@@ -24,12 +24,12 @@ echo "Removing nautilus..."
 sudo pacman -Runs nautilus
 
 echo "Setting Materia-dark-compact as the gtk theme for the system..."
-gtk_theme_set=$(awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini) > tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
+gtk_theme_set=$(awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini) >tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
 sudo rm tmpfile
 if [[ "$gtk_theme_set" -eq 1 ]]; then
     sudo mkdir ~/.config/gtk-3.0/
-    echo "[Settings]" > ~/.config/gtk-3.0/settings.ini
-    cat << EOF >> ~/.config/gtk-3.0/settings.ini
+    echo "[Settings]" >~/.config/gtk-3.0/settings.ini
+    cat <<EOF >>~/.config/gtk-3.0/settings.ini
 "gtk-theme-name=Materia-dark-compact"
 "gtk-icon-theme-name=Adwaita"
 "gtk-font-name=Cantarell 11"
@@ -84,7 +84,7 @@ read -rp "What theme do you want for AwesomeWM? [$theme_options] " response && r
 theme_file="$theme_dir$response.lua"
 
 if [[ -e "$theme_file" ]]; then
-    echo "THEME=$response" > "$HOME"/.config/awesome/theme.lua
+    echo "THEME=$response" >"$HOME"/.config/awesome/theme.lua
     echo "Theme saved"
 else
     echo "Invalid theme choice. Leaving default 'purple'."
@@ -99,7 +99,7 @@ git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
 git clone https://github.com/paulo-granthon/starship ~/.config/starship
 
 echo "Setting up Starship in \`.bashrc\` and applying custom config path..."
-cat << EOF > ~/.bashrc
+cat <<EOF >~/.bashrc
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init bash)"
