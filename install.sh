@@ -22,6 +22,8 @@ packages=(
     lua
     luarocks
     luajit
+    luacheck
+    shellcheck
     python
     go
     materia-gtk-theme
