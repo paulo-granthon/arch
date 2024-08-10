@@ -1,7 +1,48 @@
 #!/bin/bash
 
+RESET='\033[0m'
+RED='\033[0;31m'
+
+MOCK=false
+
+for ((i = 1; i <= $#; i++)); do
+    arg="${!i}"
+
+    case $arg in
+    -m | --mock)
+        MOCK=true
+        shift
+        ;;
+    *) echo "Unknown parameter passed: $1" && exit 1 ;;
+    esac
+    shift
+done
+
+function is_mock {
+    if [[ "$MOCK" == "true" ]]; then
+        return 0
+    fi
+
+    return 1
+}
+
+home_path=$HOME
+pacman_install_command="S"
+gh_auth_command="login"
+pacman_uninstall_command="Runs"
+starship_command="sh"
+
+if is_mock; then
+    echo -e "\n${RED}Mocking the installation process...${RESET}"
+    home_path="/tmp"
+    pacman_install_command="Ss"
+    gh_auth_command="status"
+    pacman_uninstall_command="Qs"
+    starship_command="(read text; echo \"received \$(echo -n \"\${text}\" | wc -c) characters from request.\")"
+fi
+
 function prompt {
-    read -rp "$1? [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
+    read -rp "$1 [Y/n] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
     if [[ "$response" == "y" ]]; then
         return 0
     fi
@@ -38,29 +79,29 @@ packages=(
     scrot
 )
 
-echo "Packages to install:"
+echo -e "\nPackages to install:"
 for package in "${packages[@]}"; do
     echo "  $package"
 done
 
-echo "Updating keyrings and installing predefined packages..."
-sudo pacman -Sy --needed "${packages[@]}" --noconfirm
+echo -e "\nUpdating keyrings and installing predefined packages..."
+sudo pacman -"${pacman_install_command}"y --needed "${packages[@]}" --noconfirm
 
-echo "Installing Starship Prompt..."
-curl -sS https://starship.rs/install.sh | sh
+echo -e "\nInstalling Starship Prompt..."
+curl -sS https://starship.rs/install.sh | eval "${starship_command}"
 
 neofetch
 
-echo "Removing nautilus..."
-sudo pacman -Runs nautilus
+echo -e "\nRemoving nautilus..."
+sudo pacman -"${pacman_uninstall_command}" nautilus --pretend
 
-echo "Setting Materia-dark-compact as the gtk theme for the system..."
-gtk_theme_set=$(awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' ~/.config/gtk-3.0/settings.ini) >tmpfile && sudo mv tmpfile ~/.config/gtk-3.0/settings.ini
+echo -e "\nSetting Materia-dark-compact as the gtk theme for the system..."
+gtk_theme_set=$(awk 'NR==2{$0="gtk-theme-name=Materia-dark-compact"}1' "${home_path}"/.config/gtk-3.0/settings.ini) >tmpfile
+sudo mv tmpfile "${home_path}"/.config/gtk-3.0/settings.ini
 sudo rm tmpfile
-if [[ "$gtk_theme_set" -eq 1 ]]; then
-    sudo mkdir ~/.config/gtk-3.0/
-    echo "[Settings]" >~/.config/gtk-3.0/settings.ini
-    cat <<EOF >>~/.config/gtk-3.0/settings.ini
+
+gtk_config=$(
+    cat <<EOF
 "gtk-theme-name=Materia-dark-compact"
 "gtk-icon-theme-name=Adwaita"
 "gtk-font-name=Cantarell 11"
@@ -76,57 +117,68 @@ if [[ "$gtk_theme_set" -eq 1 ]]; then
 "gtk-xft-hinting=1"
 "gtk-xft-hintstyle=hintfull"
 EOF
+)
 
+if [[ "$gtk_theme_set" -eq 1 ]]; then
+    sudo mkdir "${home_path}"/.config/gtk-3.0/
+    echo "[Settings]" >"${home_path}"/.config/gtk-3.0/settings.ini
+    echo "${gtk_config}" >>"${home_path}"/.config/gtk-3.0/settings.ini
 fi
 
-echo "Starting GitHub authentication..."
-gh auth login
+echo -e "\nStarting GitHub authentication..."
+gh auth "${gh_auth_command}"
 
-mkdir "$HOME/.local/"
-mkdir "$HOME/.local/bin/"
-mkdir "$HOME/pics/"
-mkdir "$HOME/pics/screenshots/"
+mkdir "${home_path}/.local/"
+mkdir "${home_path}/.local/bin/"
+mkdir "${home_path}/pics/"
+mkdir "${home_path}/pics/screenshots/"
 
-echo "Installing yay"
-sudo pacman -S --needed git base-devel --noconfirm && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si --noconfirm && cd || exit
+echo -e "\nInstalling yay"
+sudo pacman -"${pacman_install_command}" --needed git base-devel --noconfirm
+git clone https://aur.archlinux.org/yay.git
+cd yay || exit
+makepkg -si --noconfirm
+cd .. || exit
+rm -rf ./yay
+cd || exit
 
-echo "Cloning configuration files for AwesomeWM from GitHub..."
-git clone https://github.com/paulo-granthon/awesomewm ~/.config/awesome
+echo -e "\nCloning configuration files for AwesomeWM from GitHub..."
+git clone https://github.com/paulo-granthon/awesomewm "${home_path}"/.config/awesome
 
-echo "Giving permissions to \`.config/awesome\` bash scripts..."
+echo -e "\nGiving permissions to \`.config/awesome\` bash scripts..."
 CUR_DIR=$(pwd)
-cd ~/.config/awesome && make && cd "$CUR_DIR" || exit
+cd "${home_path}"/.config/awesome && make && cd "$CUR_DIR" || exit
 
 if prompt "Install Picom?"; then
-    sudo pacman -S picom --noconfirm
+    sudo pacman -"${pacman_install_command}" picom --noconfirm
 
-    echo "Cloning configuration files for Picom..."
-    git clone https://github.com/paulo-granthon/picom ~/.config/picom
+    echo -e "\nCloning configuration files for Picom..."
+    git clone https://github.com/paulo-granthon/picom "${home_path}"/.config/picom
 fi
 
-theme_dir="$HOME/.config/awesome/themes/"
+theme_dir="$home_path/.config/awesome/themes/"
 theme_options=$(find "$theme_dir" | sed 's/\..*//')
 
 read -rp "What theme do you want for AwesomeWM? [$theme_options] " response && response=${response:-Y} && response=$(echo "$response" | tr '[:upper:]' '[:lower:]')
 theme_file="$theme_dir$response.lua"
 
 if [[ -e "$theme_file" ]]; then
-    echo "THEME=$response" >"$HOME"/.config/awesome/theme.lua
-    echo "Theme saved"
+    echo "THEME=$response" >"$home_path"/.config/awesome/theme.lua
+    echo -e "\nTheme saved"
 else
-    echo "Invalid theme choice. Leaving default 'purple'."
+    echo -e "\nInvalid theme choice. Leaving default 'purple'."
 fi
 
-echo "Restarting AwesomeWM..."
+echo -e "\nRestarting AwesomeWM..."
 echo 'awesome.restart()' | awesome-client
 
-echo "Cloning configuration files for Alacritty, NeoVim and Starship from GitHub..."
-git clone https://github.com/paulo-granthon/alacritty ~/.config/alacritty
-git clone https://github.com/paulo-granthon/nvim ~/.config/nvim
-git clone https://github.com/paulo-granthon/starship ~/.config/starship
+echo -e "\nCloning configuration files for Alacritty, NeoVim and Starship from GitHub..."
+git clone https://github.com/paulo-granthon/alacritty "${home_path}"/.config/alacritty
+git clone https://github.com/paulo-granthon/nvim "${home_path}"/.config/nvim
+git clone https://github.com/paulo-granthon/starship "${home_path}"/.config/starship
 
-echo "Setting up preferences and fixes in \`.bashrc\`..."
-cat <<EOF >>testfile
+bashrc_prefs=$(
+    cat <<EOF
 export EDITOR=nvim
 export TERM=xterm-256color
 export GTK_THEME=Adwaita:dark
@@ -146,12 +198,16 @@ PS1='[\u@\h \W]\\$ '
 export PAGER=''
 
 EOF
+)
 
-echo "Setting up PATH configuration in \`.bashrc\`..."
-cat <<EOF >>~/.bashrc
+echo -e "\nSetting up preferences and fixes in \`.bashrc\`..."
+echo "${bashrc_prefs}" >>"${home_path}"/.bashrc
+
+bashrc_path=$(
+    cat <<EOF
 # PATH configuration
 GO_PATH=\$(go env GOPATH)/bin
-export PATH=\$PATH:"\$HOME/.local/bin"
+export PATH=\$PATH:"\$home_path/.local/bin"
 export PATH=\$PATH:\$GO_PATH
 export PATH=\$PATH:~/.dotnet/tools
 
@@ -159,9 +215,13 @@ export PATH=\$PATH:~/.dotnet/tools
 shopt -s cdable_vars
 
 EOF
+)
 
-echo "Setting up custom aliases in \`.bashrc\`..."
-cat <<EOF >>~/.bashrc
+echo -e "\nSetting up PATH configuration in \`.bashrc\`..."
+echo "${bashrc_path}" >>"${home_path}"/.bashrc
+
+bashrc_aliases=$(
+    cat <<EOF
 # general aliases
 alias ls='exa -lhTL 1 --icons --git --group-directories-first'
 alias grep='grep --color=auto'
@@ -179,70 +239,84 @@ exec &>/dev/tty
 alias EM="/tmp/envyman"
 
 EOF
+)
 
-echo "Setting up Starship in \`.bashrc\` and applying custom config path..."
-cat <<EOF >~/.bashrc
+echo -e "\nSetting up custom aliases in \`.bashrc\`..."
+echo "${bashrc_aliases}" >>"${home_path}"/.bashrc
+
+bashrc_starship=$(
+    cat <<EOF
 # Starship
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "\$(starship init bash)"
 
 EOF
+)
 
-echo "Cloning custom scripts from GitHub gists..."
+echo -e "\nSetting up Starship in \`.bashrc\` and applying custom config path..."
+echo "${bashrc_starship}" >>"${home_path}"/.bashrc
+
+echo -e "\nCloning custom scripts from GitHub gists..."
 
 echo "  sshot"
-gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "$HOME"/.local/bin/sshot
-chmod +x ~/.local/bin/sshot
+gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "${home_path}"/sshot
+chmod +x "${home_path}"/.local/bin/sshot
 
 echo "  colwatch"
-gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "$HOME"/.local/bin/colwatch
-chmod +x ~/.local/bin/colwatch
+gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "${home_path}"/colwatch
+chmod +x "${home_path}"/.local/bin/colwatch
 
-echo "Cloning and setting up gitsync..."
-git clone https://github.com/paulo-granthon/gitsync "$HOME"/.local/bin/gitsync_temp
-mv "$HOME"/.local/bin/gitsync_temp/gitsync.sh "$HOME"/.local/bin/gitsync
-rm -rf "$HOME"/.local/bin/gitsync_temp/
-chmod +x ~/.local/bin/gitsync
+echo -e "\nCloning and setting up gitsync..."
+git clone https://github.com/paulo-granthon/gitsync "${home_path}"/gitsync_temp
+mv "$home_path"/.local/bin/gitsync_temp/gitsync.sh "${home_path}"/.local/bin/gitsync
+rm -rf "$home_path"/.local/bin/gitsync_temp/
+chmod +x "${home_path}"/.local/bin/gitsync
 
-echo "Creating vpn related scripts in \`~/.local/bin\`"
-cat <<EOF >~/.local/bin/vpn_start
+echo -e "\nCreating vpn related scripts in \`${home_path}/.local/bin\`"
+cat <<EOF >"${home_path}"/.local/bin/vpn_start
 #!/bin/bash
 sudo echo "starting awsvpnclient.service..."
 sudo systemctl start awsvpnclient.service &&
 sudo systemctl status awsvpnclient.service
 EOF
 
-cat <<EOF >~/.local/bin/vpn_kill
+cat <<EOF >"${home_path}"/.local/bin/vpn_kill
 #!/bin/bash
 sudo echo "stopping awsvpnclient.service..."
 sudo systemctl stop awsvpnclient.service
 sudo systemctl status awsvpnclient.service
 EOF
 
-chmod +x ~/.local/bin/vpn_start
-chmod +x ~/.local/bin/vpn_kill
+chmod +x "${home_path}"/.local/bin/vpn_start
+chmod +x "${home_path}"/.local/bin/vpn_kill
 
-echo "Scripts in \`~/.local/bin\`:"
-ls -laL "$HOME"/.local/bin/
+echo -e "\nScripts in \`${home_path}/.local/bin\`:"
+ls -laL "$home_path"/.local/bin/
 
-echo "Setting up Rust..."
+echo -e "\nSetting up Rust..."
 rustup --version
-rustup install stable
-rustup default stable
+if ! is_mock; then
+    rustup install stable
+    rustup default stable
+fi
 rustc --version
 cargo --version
 
-prompt "Install Chrome?" && yay -S google-chrome --noconfirm
+prompt "Install Chrome?" && yay -"${pacman_install_command}" google-chrome --noconfirm
 
-prompt "Set up gaming utilities? Lutris, Steam, Wine, Winetricks?" && sudo pacman -S wine winetricks lutris steam --noconfirm
+prompt "Set up gaming utilities? Lutris, Steam, Wine, Winetricks?" && sudo pacman -"${pacman_install_command}" wine winetricks lutris steam --noconfirm
 
-echo "Making the dev directory..."
-sudo mkdir /usr/dev/
-sudo chown paulo:users "/usr/dev/"
+echo -e "\nMaking the dev directory..."
+if ! is_mock; then
+    sudo mkdir /usr/dev/
+    sudo chown paulo:users "/usr/dev/"
+else
+    sudo ls /usr/dev
+fi
 
-cat <<EOF >~/.bashrc
+cat <<EOF >"${home_path}"/.bashrc
 export dev=/usr/dev
 
 EOF
 
-echo "Done!"
+echo -e "\nDone!"
