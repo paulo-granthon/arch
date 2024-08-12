@@ -87,6 +87,15 @@ done
 echo -e "\nUpdating keyrings and installing predefined packages..."
 sudo pacman -"${pacman_install_command}"y --needed "${packages[@]}" --noconfirm
 
+echo -e "\nConfiguring docker..."
+sudo groupadd docker
+sudo usermod -aG docker "${USER}"
+newgrp docker
+sudo chmod 666 /var/run/docker.sock
+sudo systemctl enable docker
+sudo systemctl start docker
+docker run hello-world
+
 echo -e "\nInstalling Starship Prompt..."
 curl -sS https://starship.rs/install.sh | eval "${starship_command}"
 
