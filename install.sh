@@ -59,6 +59,7 @@ packages=(
     docker-compose
     npm
     yarn
+    ts-node
     rustup
     lua
     luarocks
@@ -66,10 +67,12 @@ packages=(
     luacheck
     shellcheck
     python
+    pylint
     go
     materia-gtk-theme
     ttf-hack-nerd
     eza
+    dua
     thunar
     cmus
     neofetch
@@ -77,6 +80,8 @@ packages=(
     thefuck
     tldr
     scrot
+    ripgrep
+    xev
 )
 
 echo -e "\nPackages to install:"
