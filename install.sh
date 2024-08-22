@@ -81,7 +81,7 @@ packages=(
     tldr
     scrot
     ripgrep
-    xev
+    xorg-xev
 )
 
 echo -e "\nPackages to install:"
