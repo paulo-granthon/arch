@@ -273,11 +273,15 @@ echo "${bashrc_starship}" >>"${home_path}"/.bashrc
 echo -e "\nCloning custom scripts from GitHub gists..."
 
 echo "  sshot"
-gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "${home_path}"/sshot
+gh gist clone https://gist.github.com/paulo-granthon/582d7ef3e532284782132f0f702a8669 "${home_path}"/.local/bin/sshot_temp
+mv "$home_path"/.local/bin/sshot_temp/sshot "${home_path}"/.local/bin/sshot
+rm -rf "$home_path"/.local/bin/sshot_temp/
 chmod +x "${home_path}"/.local/bin/sshot
 
 echo "  colwatch"
-gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "${home_path}"/colwatch
+gh gist clone https://gist.github.com/paulo-granthon/07e22d1f7f5ff158fac0645733d1f8b1 "${home_path}"/.local/bin/colwatch_temp
+mv "$home_path"/.local/bin/colwatch_temp/colwatch.bash "${home_path}"/.local/bin/colwatch
+rm -rf "$home_path"/.local/bin/colwatch_temp/
 chmod +x "${home_path}"/.local/bin/colwatch
 
 echo -e "\nCloning and setting up gitsync..."
