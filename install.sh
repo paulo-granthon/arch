@@ -72,7 +72,7 @@ packages=(
     materia-gtk-theme
     ttf-hack-nerd
     eza
-    dua
+    dua-cli
     thunar
     cmus
     neofetch
