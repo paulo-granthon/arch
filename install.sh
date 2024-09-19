@@ -82,6 +82,7 @@ packages=(
     scrot
     ripgrep
     xorg-xev
+    pgcli
     man
 )
 
